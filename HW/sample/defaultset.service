@@ -1,0 +1,12 @@
+[Unit]
+Description=Wifi 5GHz set service
+
+[Service]
+WorkingDirectory=/home/pi/
+Type=oneshot
+ExecStart=/bin/sh wifiset.sh start
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+

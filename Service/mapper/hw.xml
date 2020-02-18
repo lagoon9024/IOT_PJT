@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hw">  
+
+  <update id = "updateIP">
+    update Device set d_Ip = #{d_Ip} where UUID = #{UUID};
+  </update>
+
+  <select id = "updateHWsetting">
+    select LEFT(s_Time, 5) AS 's_Time', s_Amount
+    from Setting where d_No = #{d_No} order by s_Time;
+  </select>
+
+  <select id = "getIP">
+    select d_Ip from Device where d_No = #{d_No};
+  </select>
+
+</mapper>

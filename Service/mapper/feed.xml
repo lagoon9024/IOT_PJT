@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="feed">  
+  <select id = "selectAll">
+    select f.f_No, f.f_Name, f.f_Manufacturer, 
+    (select if(count(r_Rank)=0, 0.0, round(sum(r_Rank)/count(r_Rank), 1)) from Review where f_No = f.f_No) as 'f_Rank',
+    (select count(r_Rank) from Review where f_No = f.f_No) as 'f_Count' from Feed f;
+  </select>
+
+  <select id = "selectBasic">
+    select f_No, f_Name, f_Species, f_Manufacturer
+    , (select if(count(r_Rank)=0, 0.0, round(sum(r_Rank)/count(r_Rank), 1)) from Review r where f_No = #{f_No}) as 'f_Rank'
+    , (select count(r_Rank) from Review where f_No = #{f_No}) as 'f_Count' from Feed where f_No = #{f_No};
+  </select>
+
+  <select id = "selectNutrient">
+    select f_No, f_Protein, f_Fat, f_Calcium, f_Phosphorus, f_Fiber, f_Ash, f_Moisture from Feed where f_No = #{f_No};
+  </select>
+
+  <select id = "getData">
+    select d.d_Age, d.d_Weight, f.f_Protein, f.f_Fat, f.f_Calcium, f.f_Phosphorus, f.f_Fiber, f.f_Ash, f.f_Moisture 
+    from Device d, Feed f where d.d_No = #{d_No} and f.f_No = #{f_No};
+  </select>
+
+  <select id = "getDevice">
+    select d_Age, d_Weight from Device where d_No = #{d_No};
+  </select>
+
+  <select id = "getAnalysis">
+    select d.d_Species, d.d_Age, f.f_Protein, f.f_Fat, f.f_Calcium, f.f_Phosphorus, f.f_Fiber, f.f_Ash, f.f_Moisture
+    from Device d, Feed f where d.d_No = #{d_No} and f.f_No = #{f_No};
+  </select>
+
+</mapper>

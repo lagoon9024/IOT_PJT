@@ -1,0 +1,23 @@
+{
+  "name": "hwserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "childprocess": "^2.0.2",
+    "express": "^4.17.1",
+    "mariadb": "^2.1.5",
+    "mybatis-mapper": "^0.6.5",
+    "mysql": "^2.18.1",
+    "ngrok": "^3.2.7",
+    "node-cron": "^2.0.3",
+    "pandas": "0.0.3",
+    "request": "^2.88.0"
+  }
+}

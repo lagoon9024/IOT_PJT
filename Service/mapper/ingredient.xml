@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ingredient">  
+  <select id = "selectDoubt">
+    select i_Name, i_Doubt, i_Description, if(i_Allergy like '', false, true) as 'isAllergy' from Ingredient 
+    where i_Doubt != '' and i_Name in (select i_Name from Feed_Ingredient where f_No = #{f_No});
+  </select>
+
+  <select id = "selectWarning">
+    select i_Name, i_Warning, i_Description, if(i_Allergy like '', false, true) as 'isAllergy' from Ingredient 
+    where i_Warning != '' and i_Name in (select i_Name from Feed_Ingredient where f_No = #{f_No});
+  </select>
+
+  <select id = "selectBasic">
+    select i_Name, i_Description, if(i_Allergy like '', false, true) as 'isAllergy' from Ingredient 
+    where i_Doubt = '' and i_Warning = '' and i_Name in (select i_Name from Feed_Ingredient where f_No = #{f_No});
+  </select>
+
+</mapper>

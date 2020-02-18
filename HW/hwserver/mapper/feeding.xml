@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="local_feeding_log">  
+  <select id = "selectAll">
+    select * from local_feeding_log where updateflag=0;
+  </select>
+  <select id = "updateflag">
+    update local_feeding_log
+    set updateflag=1
+    where _datetime between #{start} and #{end};
+  </select>
+</mapper>

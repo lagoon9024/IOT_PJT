@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="review">
+  <select id = "getRank">
+    select if(count(r_Rank)=0, 0.0, round(sum(r_Rank)/count(r_Rank), 1)) as 'r_Rank' from Review where f_No = #{f_No};
+  </select>
+
+  <select id = "selectBasic">
+    select r.r_No, r.u_No, (select u_Name from User where u_No = r.u_No) as 'u_Name', r.r_Rank, LEFT(r.r_Date, 10) as 'r_Date', 
+    r.r_Positive, r.r_Negative, 
+    if((select count(g_No) from Good where u_No = #{u_No} and r_No = r.r_No)>0, true, false) as 'r_Good',
+    (select count(g_No) from Good where r_No = r.r_No) as 'r_Count' 
+    from Review r where f_No = #{f_No};
+  </select>
+
+  <select id = "selectBest">
+    select r.r_No, r.u_No, (select u_Name from User where u_No = r.u_No) as 'u_Name', r.r_Rank, LEFT(r.r_Date, 10) as 'r_Date', 
+    r.r_Positive, r.r_Negative, 
+    if((select count(g_No) from Good where u_No = #{u_No} and r_No = r.r_No)>0, true, false) as 'r_Good',
+    (select count(g_No) from Good where r_No = r.r_No) as 'r_Count' 
+    from Review r where f_No = #{f_No} order by (select count(g_No) from Good where r_No = r.r_No) desc;
+  </select>
+
+  <select id = "selectNew">
+    select r.r_No, r.u_No, (select u_Name from User where u_No = r.u_No) as 'u_Name', r.r_Rank, LEFT(r.r_Date, 10) as 'r_Date', 
+    r.r_Positive, r.r_Negative, 
+    if((select count(g_No) from Good where u_No = #{u_No} and r_No = r.r_No)>0, true, false) as 'r_Good',
+    (select count(g_No) from Good where r_No = r.r_No) as 'r_Count' 
+    from Review r where f_No = #{f_No} order by r_Date desc;
+  </select>
+
+  <select id = "selectOne">
+    select r.r_No, (select u_Name from User where u_No = r.u_No) as 'u_Name', r.r_Rank, LEFT(r.r_Date, 10) as 'r_Date', 
+    r.r_Positive, r.r_Negative from Review r where r_No = #{r_No};
+  </select>
+
+  <insert id = "addReview">
+    insert into Review values (0, #{u_No}, #{f_No}, #{r_Rank}, curdate(), #{r_Positive}, #{r_Negative});
+  </insert>
+
+  <select id = 'checkGood'>
+    select g_No from Good where u_No = #{u_No} and r_No = #{r_No};
+  </select>
+
+  <delete id = 'delGood'>
+    delete from Good where g_No = #{g_No};
+  </delete>
+
+  <insert id = 'addGood'>
+    insert into Good values (0, #{u_No}, #{r_No});
+  </insert>
+ 
+  <update id = "updateReview">
+    update Review set r_Rank = #{r_Rank}, r_Date = curdate(), r_Positive = #{r_Positive}, r_Negative = #{r_Negative} where r_No = #{r_No};
+  </update>
+
+  <delete id = "deleteReview">
+    delete from Review where r_No = #{r_No};
+  </delete>
+
+</mapper>

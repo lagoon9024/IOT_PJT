@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LogData">  
+  <select id = "selectAll">
+    select * from LogData;
+  </select>
+  <select id = "logUpdate">
+    insert into LogData (d_No, l_Time, l_Remain, l_Empty, l_Amount, l_Eat) 
+    values (#{d_No}, #{l_Time}, #{l_Remain}, #{l_Empty}, #{l_Amount}, #{l_Eat})
+    on duplicate key update l_Time = values(l_Time) and d_No = values(d_No);
+  </select>
+</mapper>

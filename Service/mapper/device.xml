@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="device">  
+  <select id = "selectAll">
+    select d_No, u_No, d_Name, d_Age, if(d_Bday=null, '', d_Bday) as 'd_Bday', d_Species, d_Weight from Device where u_No = #{u_No};
+  </select>
+
+  <select id = "selectOne">
+    select d_No, u_No, d_Name, d_Age, if(d_Bday=null, '', d_Bday) as 'd_Bday', d_Species, d_Weight, 
+    (select SN from Product where UUID = (select UUID from Device where d_No = #{d_No})) as 'SerialNo' 
+    from Device where d_No = #{d_No};
+  </select>
+
+  <select id = "checkSerial">
+    select UUID from Product where SN = #{SerialNo};
+  </select>
+
+  <select id = "deviceCheck">
+    select d_No from Device where UUID = (select UUID from Product where SN = #{SerialNo});
+  </select>
+
+  <insert id = "addDevice">
+    insert into Device values(0, #{u_No}, #{d_Name}, #{d_Age}, #{d_Bday}, #{d_Species}, #{d_Weight}, 
+    (select UUID from Product where SN = #{SerialNo}), null);
+  </insert>
+
+  <select id = "getDevice">
+    select d_No from Device where u_No = #{u_No} and UUID = (select UUID from Product where SN = #{SerialNo});
+  </select>
+
+  <update id = "changeLast">
+    update User set u_Last = #{d_No} where u_No = #{u_No};
+  </update>
+ 
+  <update id = "updateDevice">
+    update Device set d_Name = #{d_Name}, d_Age = #{d_Age}, d_Bday = #{d_Bday}, d_Species = #{d_Species}, d_Weight = #{d_Weight} where d_No = #{d_No};
+  </update>
+
+  <delete id = "deleteDevice">
+    delete from Device where d_No = #{d_No};
+  </delete>
+
+  <update id = "deleteLast">
+    update User u set u.u_Last = (select min(d.d_No) from Device d where d.u_No = #{u_No}) where u.u_No = #{u_No};
+  </update>
+
+  <select id = "getLast">
+    select u_Last from User where u_No = #{u_No};
+  </select>
+
+  <update id = "zeroLast">
+    update User set u_Last = 0 where u_No = #{u_No};
+  </update>  
+
+  
+</mapper>

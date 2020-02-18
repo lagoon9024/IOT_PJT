@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="setting">  
+  <select id = "selectAll">
+    select s_No, d_No, s_Time, s_Amount from Setting;
+  </select>
+
+  <select id = "selectOne">
+    select s_No, d_No, LEFT(s_Time, 5) AS 's_Time', s_Amount 
+    from Setting where d_No = #{d_No} order by s_Time;
+  </select>
+
+  <select id = "settingCheck">
+    select s_No from Setting where d_No = #{d_No} and s_Time = #{s_Time};
+  </select>
+
+  <select id = "settingCheck2">
+    select s_No from Setting where s_No != #{s_No} and d_No = (select d_No from Setting where s_No = #{s_No}) and s_Time = #{s_Time};
+  </select>
+
+  <select id = "getDeviceNo">
+    select d_No from Setting where s_No = #{s_No};
+  </select>
+
+  <insert id = "addSetting">
+    insert into Setting values(0, #{d_No}, #{s_Time}, #{s_Amount});
+  </insert>
+ 
+  <update id = "updateSetting">
+    update Setting set s_Time = #{s_Time}, s_Amount = #{s_Amount} where s_No = #{s_No};
+  </update>
+
+  <delete id = "deleteSetting">
+    delete from Setting where s_No = #{s_No};
+  </delete>  
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="join">  
+  <select id = "selectUser">
+    select u_Name, u_Last from User where u_No = #{u_No};
+  </select>
+  
+  <select id = "selectDevice">
+    select d_No, d_Name from Device where u_No = #{u_No};
+  </select>
+
+  <update id = "changeLast">
+    update User set u_Last = #{d_No} where u_No = #{u_No};
+  </update>
+  
+</mapper>
