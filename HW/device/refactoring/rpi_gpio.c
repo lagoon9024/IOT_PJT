@@ -3,6 +3,7 @@
 #include <wiringPi.h>
 #include <wiringSerial.h>
 #include <errno.h>
+#include <math.h>
 
 #include <softTone.h> //beef sound
 #include <stdio.h>
@@ -13,6 +14,7 @@
 //sonic wave set
 #define trig 26
 #define echo 27
+#define maxd 16
 
 // speaker pin set
 #define SPEAKER 6
@@ -104,7 +106,7 @@ int EMPTYCHECK(){
   int start_time, end_time ;
   float distance ;
   float sum=0;
-  for(int i=0;i<3;++i){
+  for(int i=0;i<5;++i){
   	digitalWrite(trig, LOW) ;
     delay(500) ;
     digitalWrite(trig, HIGH) ;
@@ -118,8 +120,12 @@ int EMPTYCHECK(){
 	sum+=distance;
 	printf("distance %.2f cm\n", distance) ;
   }
-  if((distance/3)<12) return 0;
-  else return 1;
+   sum/=5;
+  sum = (1-(sum/maxd))*100;
+  int ret = round(sum);
+  ret = ret<0?100:ret;
+  printf("Bucket filled :: %d percent\n",ret);
+  return ret;
 }
 
 void melody(){

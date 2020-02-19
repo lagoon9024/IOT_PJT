@@ -59,16 +59,13 @@ const useStyles = makeStyles(theme => ({
 
 const Feedreview = props => {
   const classes = useStyles();
-  // const [open, setOpen] = useState({});
   const { input, dataFetch, isLoading } = useFetchData(
     "/review/basic/" + props.f_No+"/",
     "review"
   );
 
   const { store } = useStore();
-  // useEffect(() => {
-  //   dataFetch(store.url + "/review/" + props.f_No + "/"+store.u_No, "review");
-  // }, [store]);
+
   
   React.useMemo(()=>{
     if(store.render !== undefined && store.render){

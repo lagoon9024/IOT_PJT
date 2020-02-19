@@ -31,11 +31,11 @@ const Info = props => {
   const classes = useStyles();
   const { input, isLoading, dataFetch } = useFetchData("/user/", "user");
   const { store } = useStore();
-  React.useMemo(() => {
-    if (input === undefined) {
-      dataFetch(store.url + "/user/" + store.u_No, "user");
-    }
-  }, [store]);
+  React.useMemo(async() => {
+      if(input.u_Id ===undefined && store.u_No !== ""){
+        await dataFetch(store.url + "/user/" + store.u_No, "user");
+      }
+  }, [store.u_No]);
   return (
     <div className={classes.page}>
       <h2>내 정보</h2>

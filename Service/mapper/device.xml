@@ -41,16 +41,12 @@
   </delete>
 
   <update id = "deleteLast">
-    update User u set u.u_Last = (select min(d.d_No) from Device d where d.u_No = #{u_No}) where u.u_No = #{u_No};
+    update User u set u.u_Last = if((select min(d.d_No) from Device d where d.u_No = #{u_No}) is null, 0, 
+    (select min(d.d_No) from Device d where d.u_No = #{u_No})) where u.u_No = #{u_No};
   </update>
 
   <select id = "getLast">
     select u_Last from User where u_No = #{u_No};
-  </select>
-
-  <update id = "zeroLast">
-    update User set u_Last = 0 where u_No = #{u_No};
-  </update>  
-
+  </select> 
   
 </mapper>

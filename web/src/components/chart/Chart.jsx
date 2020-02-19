@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   padding: 20px;
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
   border-radius: 5px;
-  background-color: #f7cac9;
+  background-color: #fbc1ad;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,10 +58,14 @@ const Chart = props => {
     "chart"
   );
   useEffect(() => {
-    setcenterBarIndex(input.length - 1);
+    if(input != 0){
+      setcenterBarIndex(input.length - 1);
+    }
   }, [input]);
   useEffect(() => {
-    dataFetch(store.url + "/logdata/chart/" + store.u_Last, "chart");
+    if(store.u_Last !== ""){
+      dataFetch(store.url + "/logdata/chart/" + store.u_Last, "chart");
+    }
   }, [store.u_Last])
   
 

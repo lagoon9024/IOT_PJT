@@ -11,8 +11,8 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    width: "100vw",
-    maxWidth: "500px"
+    width: "100%",
+    //maxWidth: "500px"
   },
 
   tab: {
@@ -81,7 +81,7 @@ const SearchCalculate = props => {
     <Box className={classes.searchBarRoot}>
       <Autocomplete
         id="feed-search"
-        style={{ width: "90%" }}
+        style={props.fullScreen ? {width : "95%"}: { width: "90%" }}
         getOptionLabel={option =>
           typeof option === "string" ? option : option.f_Name
         }
@@ -112,6 +112,11 @@ const SearchCalculate = props => {
             size="small"
             onChange={handleChange}
             onKeyDown={pressEnter}
+            InputLabelProps={{
+              style : {
+                fontSize : props.fullScreen ? "12px":"16px"
+              }
+            }}
           />
         )}
         renderOption={(option, { inputValue }) => {

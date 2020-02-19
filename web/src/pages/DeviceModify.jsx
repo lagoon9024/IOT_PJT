@@ -100,15 +100,17 @@ const CheckRadio = props => {
 
 const DeviceModify = props => {
   const classes = useStyles();
-  const { store,onChangeStore } = useStore();
-  const [cookies, setCookie, removeCookie] = useCookies(['d_CurNo']);
+  const { store, onChangeStore } = useStore();
+  const [cookies, setCookie, removeCookie] = useCookies(["d_CurNo"]);
   const { input, isLoading, updateField, dataFetch } = useFetchData(
     "/device/get/",
     "device"
   );
   useEffect(() => {
-    dataFetch(store.url + "/device/get/" + cookies.d_CurNo , "device");
-  }, [store]);
+    if (store.url !== "") {
+      dataFetch(store.url + "/device/get/" + cookies.d_CurNo, "device");
+    }
+  }, [store.url]);
   const [open, setOpen] = React.useState(false);
   const onSubmit = async e => {
     await axios
@@ -141,7 +143,7 @@ const DeviceModify = props => {
     });
     if (result.data.validation) {
       alert("삭제했습니다.");
-      onChangeStore({...store, u_Last : result.data.data.u_Last});
+      onChangeStore({ ...store, u_Last: result.data.data.u_Last });
       props.history.replace("/device");
     } else {
       alert("삭제에 실패했습니다.");
@@ -150,167 +152,163 @@ const DeviceModify = props => {
   };
   return (
     <>
-      {isLoading ? (
-        <div>Loading....</div>
-      ) : (
-        <div className={classes.page}>
-          <div className={classes.inputText}>
-            <FormControl
-              component="fieldset"
-              fullWidth
-              className={classes.inputText}
+      <div className={classes.page}>
+        <div className={classes.inputText}>
+          <FormControl
+            component="fieldset"
+            fullWidth
+            className={classes.inputText}
+          >
+            <FormLabel component="legend" required>
+              종을 선택해주세요
+            </FormLabel>
+            <RadioGroup
+              aria-label="species"
+              name="d_Species"
+              value={isLoading ? "" : input.d_Species ? input.d_Species : ""}
+              onChange={updateField}
+              row
+              className={classes.radioButtons}
             >
-              <FormLabel component="legend" required>
-                종을 선택해주세요
-              </FormLabel>
-              <RadioGroup
-                aria-label="species"
-                name="d_Species"
-                value={input.d_Species ? input.d_Species : ""}
-                onChange={updateField}
-                row
-                className={classes.radioButtons}
-              >
-                <FormControlLabel
-                  value="강아지"
-                  control={<DogRadio />}
-                  label="강아지"
-                  labelPlacement="bottom"
-                />
-                <FormControlLabel
-                  value="고양이"
-                  control={<CatRadio />}
-                  label="고양이"
-                  labelPlacement="bottom"
-                />
-              </RadioGroup>
-            </FormControl>
+              <FormControlLabel
+                value="강아지"
+                control={<DogRadio />}
+                label="강아지"
+                labelPlacement="bottom"
+              />
+              <FormControlLabel
+                value="고양이"
+                control={<CatRadio />}
+                label="고양이"
+                labelPlacement="bottom"
+              />
+            </RadioGroup>
+          </FormControl>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="d_Name"
+            label="이름"
+            name="d_Name"
+            autoFocus
+            onChange={updateField}
+            value={isLoading ? "" : input.d_Name ? input.d_Name : ""}
+          />
+          <FormControl
+            component="fieldset"
+            fullWidth
+            className={classes.inputText}
+          >
+            <FormLabel component="legend" required>
+              생애상태를 알려주세요
+            </FormLabel>
+            <RadioGroup
+              aria-label="lifeState"
+              name="d_Age"
+              value={isLoading ? "" : input.d_Age ? input.d_Age : ""}
+              onChange={updateField}
+              row
+              className={classes.radioButtons}
+            >
+              <FormControlLabel
+                value="유아기"
+                control={<CheckRadio />}
+                label="유아기"
+                labelPlacement="bottom"
+              />
+              <FormControlLabel
+                value="성장기"
+                control={<CheckRadio />}
+                label="성장기"
+                labelPlacement="bottom"
+              />
+              <FormControlLabel
+                value="중년기"
+                control={<CheckRadio />}
+                label="중년기"
+                labelPlacement="bottom"
+              />
+              <FormControlLabel
+                value="노년기"
+                control={<CheckRadio />}
+                label="노년기"
+                labelPlacement="bottom"
+              />
+            </RadioGroup>
+          </FormControl>
+          <Box display="flex" justifyContent="space-between">
             <TextField
               variant="outlined"
               margin="normal"
+              className={classes.halfInput}
+              type="number"
+              inputProps={{
+                step: 0.1,
+                min: 0,
+                max: 100
+              }}
               required
-              fullWidth
-              id="d_Name"
-              label="이름"
-              name="d_Name"
-              autoFocus
+              id="d_Weight"
+              label="몸무게 (kg)"
+              name="d_Weight"
+              value={isLoading ? "" : input.d_Weight ? input.d_Weight : ""}
               onChange={updateField}
-              value={input.d_Name ? input.d_Name : ""}
             />
-            <FormControl
-              component="fieldset"
-              fullWidth
-              className={classes.inputText}
-            >
-              <FormLabel component="legend" required>
-                생애상태를 알려주세요
-              </FormLabel>
-              <RadioGroup
-                aria-label="lifeState"
-                name="d_Age"
-                value={input.d_Age ? input.d_Age : ""}
-                onChange={updateField}
-                row
-                className={classes.radioButtons}
-              >
-                <FormControlLabel
-                  value="유아기"
-                  control={<CheckRadio />}
-                  label="유아기"
-                  labelPlacement="bottom"
-                />
-                <FormControlLabel
-                  value="성장기"
-                  control={<CheckRadio />}
-                  label="성장기"
-                  labelPlacement="bottom"
-                />
-                <FormControlLabel
-                  value="중년기"
-                  control={<CheckRadio />}
-                  label="중년기"
-                  labelPlacement="bottom"
-                />
-                <FormControlLabel
-                  value="노년기"
-                  control={<CheckRadio />}
-                  label="노년기"
-                  labelPlacement="bottom"
-                />
-              </RadioGroup>
-            </FormControl>
-            <Box display="flex" justifyContent="space-between">
-              <TextField
-                variant="outlined"
-                margin="normal"
-                className={classes.halfInput}
-                type="number"
-                inputProps={{
-                  step: 0.1,
-                  min: 0,
-                  max: 100
-                }}
-                required
-                id="d_Weight"
-                label="몸무게 (kg)"
-                name="d_Weight"
-                value={input.d_Weight ? input.d_Weight : ""}
-                onChange={updateField}
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                className={classes.halfInput}
-                type="date"
-                id="d_Bday"
-                label="생일 (선택)"
-                inputProps={{
-                  min: "1900-01-01",
-                  max: "2100-12-31"
-                }}
-                name="d_Bday"
-                value={input.d_Bday ? input.d_Bday : ""}
-                onChange={updateField}
-                InputLabelProps={{
-                  shrink: true
-                }}
-              />
-            </Box>
             <TextField
               variant="outlined"
               margin="normal"
-              required
-              disabled
-              fullWidth
-              id="SerialNo"
-              label="일련번호 S/N"
-              name="SerialNo"
-              value={input.SerialNo ? input.SerialNo : ""}
+              className={classes.halfInput}
+              type="date"
+              id="d_Bday"
+              label="생일 (선택)"
+              inputProps={{
+                min: "1900-01-01",
+                max: "2100-12-31"
+              }}
+              name="d_Bday"
+              value={isLoading ? "" : input.d_Bday ? input.d_Bday : ""}
               onChange={updateField}
+              InputLabelProps={{
+                shrink: true
+              }}
             />
-            <Box display="flex" justifyContent="space-between">
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={clsx(classes.submit, classes.halfInput)}
-                onClick={onSubmit}
-              >
-                수정하기
-              </Button>
-              <Button
-                fullWidth
-                variant="contained"
-                color="secondary"
-                className={clsx(classes.submit, classes.halfInput)}
-                onClick={handleClickOpen}
-              >
-                삭제하기
-              </Button>
-            </Box>
-          </div>
+          </Box>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            disabled
+            fullWidth
+            id="SerialNo"
+            label="일련번호 S/N"
+            name="SerialNo"
+            value={isLoading ? "" : input.SerialNo ? input.SerialNo : ""}
+            onChange={updateField}
+          />
+          <Box display="flex" justifyContent="space-between">
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={clsx(classes.submit, classes.halfInput)}
+              onClick={onSubmit}
+            >
+              수정하기
+            </Button>
+            <Button
+              fullWidth
+              variant="contained"
+              color="secondary"
+              className={clsx(classes.submit, classes.halfInput)}
+              onClick={handleClickOpen}
+            >
+              삭제하기
+            </Button>
+          </Box>
         </div>
-      )}
+      </div>
       <Dialog
         open={open}
         onClose={handleClose}

@@ -40,11 +40,13 @@ const FeedAnalysis = props => {
     "feedinfo"
   );
   useEffect(() => {
-    dataFetch(
-      store.url + "/feed/analysis/" + store.u_Last + "/" + props.f_No,
-      "feedinfo"
-    );
-  }, [store]);
+    if(store.u_Last !== ""){
+      dataFetch(
+        store.url + "/feed/analysis/" + store.u_Last + "/" + props.f_No,
+        "feedinfo"
+      );
+    }
+  }, [store.u_Last]);
   return (
     <>
       <Box width="99%" maxWidth="500px">
@@ -53,7 +55,7 @@ const FeedAnalysis = props => {
             영양 성분 분석
           </Typography>
           <IconButton
-            color="action"
+            color="default"
             aria-describedby={id}
             onClick={handleClick}
           >

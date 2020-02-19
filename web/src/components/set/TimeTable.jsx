@@ -37,22 +37,22 @@ const TimeTable = props => {
   const { store, onChangeStore } = useStore();
   const [editable, setEditable] = useState({});
   const [click, setClick] = useState([false, -1]);
-  const [open,setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleOpen = event => {
-    if(event.currentTarget.name ==="취소"){
+    if (event.currentTarget.name === "취소") {
       setEditable({ ...editable, [event.currentTarget.value]: false });
-      setClick([false,-1])
+      setClick([false, -1]);
       dataFetch(store.url + "/setting/" + store.u_Last, "timetable");
-    }else{
-      onChangeStore({target : input.data[event.currentTarget.value].s_No})
+    } else {
+      onChangeStore({ target: input.data[event.currentTarget.value].s_No });
       setOpen(true);
     }
-  }
+  };
   const handleClose = event => {
     setOpen(false);
-    onChangeStore({target : ""})
-  }
+    onChangeStore({ target: "" });
+  };
 
   const modifyClickEvent = async event => {
     if (click[0] && click[1] !== event.currentTarget.value) {
@@ -91,27 +91,25 @@ const TimeTable = props => {
   };
 
   const delteClickEvent = async event => {
-    
-      // const targetIndex = event.currentTarget.value;
-      await axios({
-        method: "DELETE",
-        url: store.url + "/setting/" +store.target,
-        headers: store.headers
+    // const targetIndex = event.currentTarget.value;
+    await axios({
+      method: "DELETE",
+      url: store.url + "/setting/" + store.target,
+      headers: store.headers
+    })
+      .then(res => {
+        if (res.data.validation) {
+          // alert(res.data.message);
+          dataFetch(store.url + "/setting/" + store.u_Last, "timetable");
+          onChangeStore({ target: "" });
+          setOpen(false);
+        } else {
+          alert(res.data.message);
+        }
       })
-        .then(res => {
-          if (res.data.validation) {
-            // alert(res.data.message);
-            dataFetch(store.url + "/setting/" + store.u_Last, "timetable");
-            onChangeStore({target : ""});
-            setOpen(false);
-          } else {
-            alert(res.data.message);
-          }
-        })
-        .catch(error => {
-          alert("통신에러가 발생!");
-        });
-    
+      .catch(error => {
+        alert("통신에러가 발생!");
+      });
   };
 
   const { input, isLoading, setInput, dataFetch } = useFetchData(
@@ -119,12 +117,18 @@ const TimeTable = props => {
     "timetable"
   );
 
-  React.useMemo(() => {
-    if (store.render) {
-      dataFetch(store.url + "/setting/" + store.u_Last, "timetable");
+  React.useMemo(async () => {
+    if ((typeof(store.u_Last) === "number") && (store.render || input.data === undefined)) {
+      await dataFetch(store.url + "/setting/" + store.u_Last, "timetable");
       onChangeStore({ render: false });
     }
-  }, [store]);
+  }, [store.u_Last]);
+  React.useMemo(async () => {
+    if ((typeof(store.u_Last) === "number") && (store.render || input.data === undefined)) {
+      await dataFetch(store.url + "/setting/" + store.u_Last, "timetable");
+      onChangeStore({ render: false });
+    }
+  }, [store.render]);
 
   return (
     <div className={classes.page}>

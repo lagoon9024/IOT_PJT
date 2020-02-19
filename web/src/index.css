@@ -12,6 +12,9 @@ code {
     monospace;
 }
 @font-face {
+  font-family: 'SCDream'; src: url(./assets/fonts/SCDream3.otf) format('truetype');font-weight: 200; font-style: normal;
+}
+@font-face {
   font-family: 'SCDream'; src: url(./assets/fonts/SCDream4.otf) format('truetype');font-weight: normal; font-style: normal;
 }
 @font-face {

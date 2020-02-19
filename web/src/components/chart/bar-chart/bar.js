@@ -37,7 +37,7 @@ export default ({
         y={y}
         width={barWidth}
         height={rectHeight}
-        fill={'#0f4c81'}
+        fill={'#7dabd0'}
       />
     )
   }

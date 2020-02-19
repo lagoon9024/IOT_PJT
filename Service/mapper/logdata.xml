@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="logdata">  
-  <select id = "selectAll">
-    select l_Time, l_Remain, l_Empty, l_Amount from LogData where d_No = #{d_No};
+  <select id = "selectBasic">
+    select substr(l_Time, 6, 11) as 'l_Time2', l_Remain, l_Empty from LogData where d_No = #{d_No} order by l_Time desc limit 1;
   </select>  
 
   <select id = "selectChart">
-    select substr(l_Time, 6, 5) as 'l_Time2', sum(l_Eat) as 'l_Remain' from LogData where d_No = #{d_No} group by l_Time2;
+    select substr(l_Time, 6, 5) as 'l_Time2', sum(l_Eat) as 'l_Eat', sum(l_Amount) as 'l_Amount' 
+    from LogData where d_No = #{d_No} group by l_Time2 order by l_Time2 desc limit 20;
   </select>
 
   <insert id = "deviceAdd">
-    insert into LogData values (0, #{d_No}, now(), 0, 0, 0);
+    insert into LogData values (0, #{d_No}, now(), 0, 0, 0, 0);
   </insert>
 
 </mapper>

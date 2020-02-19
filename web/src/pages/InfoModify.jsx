@@ -36,11 +36,11 @@ const InfoModify = props => {
     "user"
   );
   const { store } = useStore();
-  useEffect(() => {
-    if (input === undefined) {
-      dataFetch(store.url + "/user/" + store.u_No, "user");
+  React.useMemo(async() => {
+    if(input.u_Id ===undefined && store.u_No !== ""){
+      await dataFetch(store.url + "/user/" + store.u_No, "user");
     }
-  }, [store]);
+}, [store.u_No]);
   const onClickEvent = async event => {
     if (u_NameCheck(input.u_Name) && u_EmailCheck(input.u_Email)) {
       const result = await axios.put(

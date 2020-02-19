@@ -43,8 +43,10 @@ const Record = props => {
   const randomArray = (length, max) =>
     [...new Array(length)].map(() => Math.round(Math.random() * max));
   useEffect(() => {
-    dataFetch(store.url + "/feed", "feed_all");
-  }, [store]);
+    if(store.url !== ""){
+      dataFetch(store.url + "/feed", "feed_all");
+    }
+  }, [store.url]);
   return (
     <div className={classes.page}>
       <SearchBar data={input} />

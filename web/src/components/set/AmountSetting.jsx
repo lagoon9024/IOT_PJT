@@ -145,7 +145,7 @@ const AmountSetting = props => {
           >
             <TabPanel value={value} index={0}>
               <Box minHeight="250px">
-                <SearchCalculate/>
+                <SearchCalculate fullScreen={fullScreen}/>
               </Box>
             </TabPanel>
             <TabPanel value={value} index={1}>

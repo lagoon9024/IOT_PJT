@@ -240,43 +240,23 @@ const del = function (req, res) {
                     result.data = [];
                     res.json(result);
                     return;
-                }
-                if(del_rows.changedRows>0) { //기기 삭제 후 다른 기기번호로 u_Last 갱신에 성공한 경우
-                    let get_query = mybatisMapper.getStatement('device', 'getLast', device, format);
-                    connection.query(get_query, function(get_err, get_rows){
-                        if(get_err) {
-                            console.log(get_err);
-                            result.validation = false;
-                            result.message = '유저의 최신 기기 번호를 갱신하던 중 오류가 발생하였습니다';
-                            result.data = [];
-                            res.json(result);
-                            return;
-                        }
-                        result.validation = true;
-                        result.message = '유저의 최신 기기 번호 갱신 성공';
-                        result.data = get_rows[0];
+                }                
+                let get_query = mybatisMapper.getStatement('device', 'getLast', device, format);
+                connection.query(get_query, function(get_err, get_rows){
+                    if(get_err) {
+                        console.log(get_err);
+                        result.validation = false;
+                        result.message = '유저의 최신 기기 번호를 갱신하던 중 오류가 발생하였습니다';
+                        result.data = [];
                         res.json(result);
-                        del_temp.no = 0;
-                    });
-                }
-                else{ //삭제하기 전 기기의 개수가 1개라서 삭제 후 u_Last가 갱신되지 않은 경우
-                    let zero_query = mybatisMapper.getStatement('device', 'zeroLast', device, format);
-                    connection.query(zero_query, function(zero_err, zero_rows){
-                        if(zero_err) {
-                            console.log(zero_err);
-                            result.validation = false;
-                            result.message = '유저의 최신 기기 번호를 갱신하던 중 오류2가 발생하였습니다';
-                            result.data = [];
-                            res.json(result);
-                            return;
-                        }
-                        result.validation = true;
-                        result.message = '유저의 최신 기기 번호를 0으로 갱신 성공';
-                        result.data = {u_Last: 0};
-                        res.json(result);
-                        del_temp.no = 0;
-                    });
-                }
+                        return;
+                    }
+                    result.validation = true;
+                    result.message = '기기 정보 삭제 후 유저의 최신 기기 번호 갱신 성공';
+                    result.data = get_rows[0];
+                    res.json(result);
+                    del_temp.no = 0;
+                });                
             });
         });
     }

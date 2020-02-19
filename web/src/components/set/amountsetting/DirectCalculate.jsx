@@ -52,6 +52,7 @@ const DirectCalculate = props => {
         <TextField
           name="ME"
           value={input.ME}
+          type = "number"
           onChange={changeEvent}
           variant="standard"
           size={fullScreen ? "small" : "medium"}

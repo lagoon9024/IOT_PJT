@@ -47,8 +47,11 @@ const NutritionInfo = props => {
   );
   const { store } = useStore();
   useEffect(() => {
-    dataFetch(store.url + "/feed/nutrient/" + props.f_No, "feedinfo");
-  }, [store]);
+    if(store.url !== ""){
+      dataFetch(store.url + "/feed/nutrient/" + props.f_No, "feedinfo");
+
+    }
+  }, [store.url]);
   return (
     <>
       <Box width="99%" maxWidth="500px">

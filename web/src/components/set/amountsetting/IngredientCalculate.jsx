@@ -63,6 +63,7 @@ const Ingredient = props => {
             style={{
               width: "90%"
             }}
+            type = "number"
             name="f_Protein"
             value={input.f_Protein}
             onChange={changeEvent}
@@ -100,6 +101,7 @@ const Ingredient = props => {
           <TextField
             variant="standard"
             label="조지방"
+            type = "number"
             margin="normal"
             style={{
               width: "90%"
@@ -143,6 +145,7 @@ const Ingredient = props => {
           <TextField
             variant="standard"
             label="칼슘"
+            type = "number"
             margin="normal"
             style={{
               width: "90%"
@@ -185,6 +188,7 @@ const Ingredient = props => {
             variant="standard"
             label="인"
             margin="normal"
+            type = "number"
             style={{
               width: "90%"
             }}
@@ -227,6 +231,7 @@ const Ingredient = props => {
           <TextField
             variant="standard"
             label="조섬유"
+            type = "number"
             margin="normal"
             style={{
               width: "90%"
@@ -269,6 +274,7 @@ const Ingredient = props => {
             variant="standard"
             label="조회분"
             margin="normal"
+            type = "number"
             style={{
               width: "90%"
             }}
@@ -311,6 +317,7 @@ const Ingredient = props => {
           <TextField
             variant="standard"
             label="수분"
+            type = "number"
             margin="normal"
             style={{
               width: "90%"

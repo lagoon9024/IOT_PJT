@@ -48,10 +48,7 @@ int main(int argc, char *argv[])
 			printf("signal :: %s\n",data);
 		}
 		end();
-		if (EMPTYCHECK()==1) {
-		insert_query(conn,1,intdata-remainfood,remainfood,(getprev==0?getprev:getprev-remainfood));
-		}
-		else insert_query(conn,0,intdata-remainfood,remainfood,(getprev==0?getprev:getprev-remainfood));
+		insert_query(conn,EMPTYCHECK(),intdata-remainfood,remainfood,(getprev==0?getprev:getprev-remainfood));
 		if(flag) melody();
 		exit(1);
 	}

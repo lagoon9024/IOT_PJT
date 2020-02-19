@@ -37,19 +37,20 @@ const CurrentTimeTable = ({ props }) => {
                     <Typography variant="h5" >시간</Typography>
                   </Box>
                   <Box  display="flex" justifyContent = "center" width="50%">
-                    <Typography variant="h5" >상태</Typography>
+                    <Typography variant="h5" >먹은양</Typography>
                   </Box>
                 </Box>
           {isLoading? (<></>): input.data === undefined
             ? ""
             : input.data.map((data,index) => (
+              
                 <Box width="100%" display="flex" justifyContent="space-between" marginBottom = "15px" key = {index}>
                   <Box display="flex" width = "50%" justifyContent = "center">
-                    <Typography variant="body1" >{data.l_Time.slice(11,19)}</Typography>
+                    <Typography variant="body1" >{data.l_Time}</Typography>
                   </Box>
                   <Box  display="flex" justifyContent = "center" width="50%">
-                    <Typography  variant="body1" className = {data.l_Remain === 0 ? classes.empty : classes.remain}>
-                      {data.l_Remain === 0 ? "다 먹음" : "남김"}
+                    <Typography  variant="body1">
+                      {data.l_Eat+"g"}
                     </Typography>
                   </Box>
                 </Box>

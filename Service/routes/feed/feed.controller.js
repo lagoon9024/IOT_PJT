@@ -180,8 +180,8 @@ const analysis = function (req, res) {
             f_No: req.params.fno
         };
         var getData = {
-            d_Age: '',
-            d_Species: '',
+            d_Age: '중년기',
+            d_Species: '강아지',
             f_Protein: 11.11,
             f_Fat: 11.11,
             f_Calcium: 1.11,

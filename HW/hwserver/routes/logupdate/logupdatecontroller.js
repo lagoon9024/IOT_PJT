@@ -1,6 +1,7 @@
 const mysql = require('mysql');
 const localmapper = require('mybatis-mapper');
 const backendmapper = require('mybatis-mapper');
+const exec = require("exec-then");
 
 const backendconn = require('../../config/backend_db.js');
 const localconn = require('../../config/local_db.js');
@@ -22,15 +23,27 @@ var datas = {
 const selectAll = function (req, res) {
     localmapper.createMapper(['./mapper/feeding.xml']);
     var query = localmapper.getStatement('local_feeding_log', 'selectAll', format);
-    localcon.query(query, function(err, rows) {
+    var excutecmd = '/home/pi/s02p13a103/HW/device/refactoring/bucketcheck';
+    if(req){
+        exec(excutecmd).then(function(){
+        localcon.query(query, function(err, rows) {
         if(err) throw err;
         console.log("read success");
-        if(rows.length){
+        if(rows.length) {
             updatevar(rows);
-        }
-        if(req && rows.length) res.json("update "+ rows.length +" data");
-        else if(req) res.json("nothing to update");
-    });  
+            res.json("update "+ rows.length +" data");
+            }});
+        });
+        
+    }
+    else{
+        localcon.query(query, function(err, rows) {
+        if(err) throw err;
+        console.log("read success");
+        if(rows.length) updatevar(rows);
+        else {
+            console.log("nothing to update");
+        }});}
 };
 
 module.exports = {

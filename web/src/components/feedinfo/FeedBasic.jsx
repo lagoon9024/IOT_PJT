@@ -63,8 +63,10 @@ const FeedBasic = props => {
   );
   const { store } = useStore();
   useEffect(() => {
-    dataFetch(store.url + "/feed/basic/" + props.f_No, "feedinfo");
-  }, [store]);
+    if(store.url !== ""){
+      dataFetch(store.url + "/feed/basic/" + props.f_No, "feedinfo");
+    }
+  }, [store.url]);
 
   return (
     <div className={classes.page}>
@@ -80,7 +82,12 @@ const FeedBasic = props => {
         <>
           <Grid container alignItems="baseline">
             <Grid item xs={3}>
-              <Box display="flex" justifyContent="flex-end">
+              <Box
+                display="flex"
+                justifyContent="flex-end"
+                alignItems="baseline"
+              >
+                <Typography variant="subtitle2">For. </Typography>
                 <img
                   src={input.f_Species === "고양이" ? CatBlack : DogBlack}
                   alt="feedTarget"

@@ -193,7 +193,7 @@ export const useFetchData = (requestURL, dataType) => {
           if (dataType === "maintable") {
           dataFetch(store.url +"/logdata/"+ response.data.data.u_Last, dataType);
           }
-          history.replace("/main");
+          // history.replace("/main");
         } else {
           if(dataType !=="maintable"){
             alert(response.data.message);

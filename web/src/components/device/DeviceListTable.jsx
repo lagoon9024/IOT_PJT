@@ -67,8 +67,10 @@ const DeviceListTable = ({ props }) => {
   };
   useEffect(() => {
     removeCookies("d_CurNo", { path: "/" });
-    dataFetch(store.url + "/device/" + store.u_No, "devicelist");
-  }, [store]);
+    if(store.u_No !== ""){
+      dataFetch(store.url + "/device/" + store.u_No, "devicelist");
+    }
+  }, [store.u_No]);
   return (
     <div className={classes.page}>
       <div className={classes.gridContainer}>

@@ -27,24 +27,78 @@ var result = {
     data: []
 };
 
-const selectAll = function (req, res) {
+const selectBasic = function (req, res) {
     if(checkToken(req.headers.authorization)) {
         logdata = ini_logdata;
         logdata.d_No = req.params.no;
-        let query = mybatisMapper.getStatement('logdata', 'selectAll', logdata, format);
-        connection.query(query, function(err, rows) {
+        let query = mybatisMapper.getStatement('logdata', 'selectBasic', logdata, format);
+        connection.query(query, function(err, rows){
             if(err){
+                console.log(err);
                 result.validation = false;
-                result.message = '전체 log 데이터를 호출하는데 에러가 발생했습니다';
+                result.message = '저장된 남은 사료양과 사료통 정보를 가져오는데 오류가 발생하였습니다';
                 result.data = [];
                 res.json(result);
                 return;
-            }            
-            console.log('Logdata selectAll ok');
+            }
+
+
             result.validation = true;
-            result.message = '해당 디바이스의 전체 log 데이터 호출 성공';
-            result.data = rows;
+            result.message = '저장된 남은 사료양과 사료통 정보 호출 성공';
+            result.data = rows[0];
             res.json(result);
+        });
+
+        
+    }
+    else res.json(result);
+};
+
+const selectNew = function(req, res){
+    if(checkToken(req.headers.authorization)) {
+        logdata = ini_logdata;
+        logdata.d_No = req.params.no;
+        let get_query = mybatisMapper.getStatement('hw', 'getIP', logdata, format);
+        connection.query(get_query, function(get_err, get_rows){
+            if(get_err){
+                console.log(get_err);
+                result.validation = false;
+                result.message = '현재 디바이스의 IP 정보를 가져오는 데 실패하였습니다';
+                result.data = [];
+                res.json(result);
+                return;
+            }
+            device_IP = {value: get_rows[0].d_Ip+'/log'};
+            const request = require('request');
+            request.get(                
+                {
+                    url: device_IP.value
+                },                 
+                function(error, response, body){
+                    if(error) {
+                        console.log(error);
+                        result.validation = false;
+                        result.message = '현재 디바이스의 사료 남은양과 사료통 정보를 갱신하는데 실패하였습니다';
+                        result.data = [];
+                        res.json(result);
+                        return;
+                    }
+                    if(body.includes('update')){
+                        console.log('logdata renewal ok');
+                        result.validation = true;
+                        result.message = '현재 디바이스의 사료 남은양과 사료통 정보를 갱신하였습니다';
+                        result.data = [];    
+                        res.json(result);                             
+                    }
+                    else{
+                        console.log('logdata renewal fail');
+                        result.validation = false;
+                        result.message = '현재 디바이스의 사료 남은양과 사료통 정보를 갱신하는데 실패하였습니다';
+                        result.data = [];
+                        res.json(result);
+                    }
+                    
+            });
         });
     }
     else res.json(result);
@@ -72,17 +126,20 @@ const selectChart = function (req, res) {
                 res.json(result);
             }
             else{
-                for(var i = 0; i<rows.length; i++){
+                for(var i = rows.length-1; i>=0; i--){
                     var bars_type = {
                         label : '00-00',
                         items : [
                             {
-                                value: 0
+                                value: 0,
+                                
                             }
-                        ]
+                        ],
+                        l_Amount: 0
                     }
                     bars_type.label = rows[i].l_Time2;
-                    bars_type.items[0].value = rows[i].l_Remain;
+                    bars_type.items[0].value = rows[i].l_Eat;
+                    bars_type.l_Amount = rows[i].l_Amount;
                     bars.push(bars_type);
                 }
                 result.validation = true;
@@ -115,6 +172,7 @@ function checkToken(token){
 }
 
 module.exports = {
-    selectAll: selectAll,
-    selectChart: selectChart
+    selectBasic: selectBasic,
+    selectChart: selectChart,
+    selectNew: selectNew
 };
