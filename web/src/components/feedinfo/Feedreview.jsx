@@ -60,24 +60,34 @@ const useStyles = makeStyles(theme => ({
 const Feedreview = props => {
   const classes = useStyles();
   const { input, dataFetch, isLoading } = useFetchData(
-    "/review/basic/" + props.f_No+"/",
+    "/review/basic/" + props.f_No + "/",
     "review"
   );
-
+  const [sorted, setSorted] = useState("NotSorted");
   const { store } = useStore();
 
-  
-  React.useMemo(()=>{
-    if(store.render !== undefined && store.render){
-      dataFetch(store.url + "/review/basic/" + props.f_No + "/"+store.u_No, "review");
+  React.useMemo(() => {
+    if (store.render !== undefined && store.render) {
+      dataFetch(
+        store.url + "/review/basic/" + props.f_No + "/" + store.u_No,
+        "review"
+      );
     }
-  },[store])
+  }, [store]);
   const onSortBest = event => {
-      dataFetch(store.url+"/review/best/" + props.f_No + "/"+store.u_No, "review");
-  }
-  const onSortRecent = event=>{
-    dataFetch(store.url+"/review/new/" + props.f_No + "/"+store.u_No, "review");
-  }
+    dataFetch(
+      store.url + "/review/best/" + props.f_No + "/" + store.u_No,
+      "review"
+    );
+    setSorted("bestSorted");
+  };
+  const onSortRecent = event => {
+    dataFetch(
+      store.url + "/review/new/" + props.f_No + "/" + store.u_No,
+      "review"
+    );
+    setSorted("recentSorted");
+  };
   return (
     <div className={classes.page}>
       {isLoading ? (
@@ -95,16 +105,23 @@ const Feedreview = props => {
                       ? "#00ab84"
                       : input.data.rank.r_Rank >= 2.5
                       ? "#ecdb54"
-                      : input.data.rank.r_Rank === 0 ?
-                      "#808080": "#b93c3c"
+                      : input.data.rank.r_Rank === 0
+                      ? "#808080"
+                      : "#b93c3c"
                     : "#000000"
                 }}
               >
-                {input.validation ? Number.parseFloat(input.data.rank.r_Rank).toFixed(1) : "0.0"}
+                {input.validation
+                  ? Number.parseFloat(input.data.rank.r_Rank).toFixed(1)
+                  : "0.0"}
               </Paper>
               <Rating
                 name="readonly"
-                value={input.validation ? Number.parseFloat(input.data.rank.r_Rank) : 0}
+                value={
+                  input.validation
+                    ? Number.parseFloat(input.data.rank.r_Rank)
+                    : 0
+                }
                 readOnly
                 precision={0.5}
               />
@@ -121,8 +138,22 @@ const Feedreview = props => {
                 variant="text"
                 aria-label="text primary button group"
               >
-                <Button onClick = {onSortBest}>추천순</Button>
-                <Button onClick = {onSortRecent}>최신순</Button>
+                <Button onClick={onSortBest}>
+                  <Typography
+                    variant={sorted === "bestSorted" ? "body1" : "body2"}
+                    color={sorted === "bestSorted" ? "primary" : "initial"}
+                  >
+                    추천순
+                  </Typography>
+                </Button>
+                <Button onClick={onSortRecent}>
+                  <Typography
+                    variant={sorted === "recentSorted" ? "body1" : "body2"}
+                    color={sorted === "recentSorted" ? "primary" : "initial"}
+                  >
+                    최신순
+                  </Typography>
+                </Button>
               </ButtonGroup>
             </Box>
             <Box>
@@ -131,13 +162,11 @@ const Feedreview = props => {
           </Box>
           {input.data === undefined ? (
             <div>...loading</div>
-          ) : 
-            input.data.list == 0 ? (
-              <Box marginTop = {12} >
+          ) : input.data.list == 0 ? (
+            <Box marginTop={12}>
               <Typography>등록된 리뷰가 없습니다</Typography>
-              </Box>
-            ):
-          (
+            </Box>
+          ) : (
             input.data.list.map((data, i) => {
               return (
                 <Box
@@ -146,7 +175,7 @@ const Feedreview = props => {
                   marginTop={1}
                   width="100%"
                   maxWidth="500px"
-                  key = {i}
+                  key={i}
                 >
                   <Box>
                     <List dense>

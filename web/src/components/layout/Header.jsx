@@ -6,7 +6,8 @@ import {
   IconButton,
   SwipeableDrawer,
   Badge,
-  Popover
+  Popover,
+  Box
 } from "@material-ui/core";
 import { useNotes } from "../custom-hooks/custom-hooks";
 
@@ -18,9 +19,10 @@ import DrawerList from "./header/DrawerList";
 import NotificationList from "./header/NotificationList";
 import UserPopOver from "./header/UserPopOver";
 import { useHistory, useLocation } from "react-router";
+import TextLogo from "../../assets/icons/bmnLogo.png";
 const useStyles = makeStyles(theme => ({
   toolBar: {
-    color: "#7dabd0",
+    color: "#7dabd0"
   },
   menuButton: {
     marginRight: theme.spacing(2)
@@ -28,20 +30,24 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1,
     cursor: "pointer"
+  },
+  textlogo: {
+    maxWidth: "100%",
+    height: "40px"
   }
 }));
 const pathNameMatch = {
-  '/set': '설정',
-  '/info': '내 정보',
-  '/infomodify': '정보 수정',
-  '/device': '밥그릇 목록',
-  '/record': '급식 기록',
-  '/feedinfo': '사료 정보',
-  '/feedsearch': '사료 검색', 
-  '/regist': '기기 등록',
-  '/devicemodify': '기기 수정',
-  '/pwmodify': '비밀번호 수정'
-}
+  "/set": "설정",
+  "/info": "내 정보",
+  "/infomodify": "정보 수정",
+  "/device": "밥그릇 목록",
+  "/record": "급식 기록",
+  "/feedinfo": "사료 정보",
+  "/feedsearch": "사료 검색",
+  "/regist": "기기 등록",
+  "/devicemodify": "기기 수정",
+  "/pwmodify": "비밀번호 수정"
+};
 // ========================================================================
 let noteItems = [
   { value: "사료통이 비었어요.", isRead: false },
@@ -79,7 +85,7 @@ const Header = props => {
   useEffect(() => {
     window.onpopstate = e => {
       setOpen(false);
-      handleClose()
+      handleClose();
       handleClose2(null);
     };
   });
@@ -103,14 +109,10 @@ const Header = props => {
   const onClickBackHandler = () => {
     history.goBack();
   };
-  if (
-    ["/", "/home", "/login", ""].indexOf(history.location.pathname) >
-    -1
-  ) {
+  if (["/", "/home", "/login", ""].indexOf(history.location.pathname) > -1) {
     return <></>;
   }
   const appBarEl = () => {
-    
     if (history.location.pathname === "/main") {
       return (
         <Toolbar>
@@ -125,10 +127,12 @@ const Header = props => {
           </IconButton>
 
           <Typography variant="body1" className={classes.title}>
-            밥멍냥
+            <Box display="flex" height="50px" alignItems="center">
+              <img src={TextLogo} alt="textlogo" className={classes.textlogo} />
+            </Box>
           </Typography>
 
-          <IconButton
+          {/* <IconButton
             color="inherit"
             aria-describedby={notePopId}
             variant="contained"
@@ -137,7 +141,7 @@ const Header = props => {
             <Badge badgeContent={unRead(notes)} color="error">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
           <IconButton
             edge="end"
             aria-label="account of current user"
@@ -149,43 +153,43 @@ const Header = props => {
             <AccountCircle />
           </IconButton>
           <Popover
-          id={notePopId}
-          open={notePopOver}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center"
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right"
-          }}
-        >
-          <NotificationList
-            notes={notes}
-            onItemCheck={idx => checkNote(idx)}
-            onItemRemove={idx => removeNote(idx)}
-            onCheckAll={() => checkAll()}
-            onRemoveAll={() => removeAll()}
-          />
-        </Popover>
-        <Popover
-          id={userPopId}
-          open={userPopOver}
-          anchorEl={userAnchorEl}
-          onClose={handleClose2}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right"
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right"
-          }}
-        >
-          <UserPopOver setAnchorEl={setUserAnchorEl} />
-        </Popover>
+            id={notePopId}
+            open={notePopOver}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center"
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right"
+            }}
+          >
+            <NotificationList
+              notes={notes}
+              onItemCheck={idx => checkNote(idx)}
+              onItemRemove={idx => removeNote(idx)}
+              onCheckAll={() => checkAll()}
+              onRemoveAll={() => removeAll()}
+            />
+          </Popover>
+          <Popover
+            id={userPopId}
+            open={userPopOver}
+            anchorEl={userAnchorEl}
+            onClose={handleClose2}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right"
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right"
+            }}
+          >
+            <UserPopOver setAnchorEl={setUserAnchorEl} />
+          </Popover>
         </Toolbar>
       );
     }
@@ -201,24 +205,32 @@ const Header = props => {
           <ArrowBack />
         </IconButton>
         <Typography variant="body1" className={classes.title}>
-            {pathNameMatch[location.pathname]}
-          </Typography>
+          {pathNameMatch[location.pathname]}
+        </Typography>
       </Toolbar>
     );
   };
-  return ( // #23d5c4
-    <div style={{position: "sticky", top: "0px", background:"linear-gradient(45deg, #7dabd0 20%, #cfe7ea 100%)", zIndex: 100}}>
+  return (
+    // #23d5c4
+    <div
+      style={{
+        position: "sticky",
+        top: "0px",
+        background: "linear-gradient(45deg, #7dabd0 20%, #cfe7ea 100%)",
+        zIndex: 100
+      }}
+    >
       {/* <AppBar position="sticky" color="default" className={classes.appBar}> */}
-        {appBarEl()}
-        <SwipeableDrawer
-          anchor={"left"}
-          open={open}
-          onClose={() => setOpen(false)}
-          onOpen={() => setOpen(true)}
-        >
-          <DrawerList setOpen={setOpen} open={open} />
-        </SwipeableDrawer>
-        
+      {appBarEl()}
+      <SwipeableDrawer
+        anchor={"left"}
+        open={open}
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
+      >
+        <DrawerList setOpen={setOpen} open={open} />
+      </SwipeableDrawer>
+
       {/* </AppBar> */}
     </div>
   );

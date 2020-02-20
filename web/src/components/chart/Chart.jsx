@@ -98,14 +98,14 @@ const Chart = props => {
               {input[centerBarIndex].label.slice(3, 5)}일
             </Typography>
             <Typography variant="h5" component="h2">
-              {input[centerBarIndex].items[0].value} / {250} Kcal
+              {input[centerBarIndex].items[0].value} / {input[centerBarIndex].l_Amount} g
             </Typography>
             <Typography className={classes.pos} color="textSecondary">
               (섭취량 / 설정량)
             </Typography>
             <Typography variant="body1" component="p">
-              {100 - Math.ceil(input[centerBarIndex].items[0].value / 250 * 100) > 0
-                ? `${100 - Math.ceil(input[centerBarIndex].items[0].value / 250 * 100)}%만큼 덜 먹었어요`
+              {100 - Math.ceil(input[centerBarIndex].items[0].value / input[centerBarIndex].l_Amount * 100) > 0
+                ? `${100 - Math.ceil(input[centerBarIndex].items[0].value / input[centerBarIndex].l_Amount * 100)}%만큼 덜 먹었어요`
                 : `다 먹었어요`}
             </Typography>
           </CardContent>

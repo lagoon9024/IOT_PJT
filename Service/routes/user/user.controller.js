@@ -135,6 +135,8 @@ const idCheck = function (req, res) {
             console.log('User idCheck fail: ' + user.u_Id);
             result.validation = false;
             result.message = '해당 ID는 이미 사용 중입니다.';
+            result.data = [];
+            res.json(result);    
         }
         else{
             console.log('User idCheck ok: ' + user.u_Id);
@@ -143,8 +145,6 @@ const idCheck = function (req, res) {
             result.data = [];
             res.json(result);
         }
-        result.data = [];
-        res.json(result);    
     });
 };
 

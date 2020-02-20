@@ -136,6 +136,9 @@ export const useFetchData = (requestURL, dataType) => {
     })
       .then(result => {
         // console.log(result);
+        if(result.data.validation){
+
+        
         switch (type) {
           case "device":
           case "devicelist":
@@ -166,6 +169,11 @@ export const useFetchData = (requestURL, dataType) => {
             setInput(result.data);
             break;
         }
+      }else{
+        if(result.data.message == "다시 로그인 해주세요!"){
+          history.replace("/login");
+        }
+      }
         setIsLoading(false);
       })
       .catch(error => {});
@@ -174,7 +182,7 @@ export const useFetchData = (requestURL, dataType) => {
   const isLoggedIn = () => {
     if (
       ["/", "/login", "/join", ""].indexOf(history.location.pathname) === -1 &&
-      (store.u_No === "" || store.u_No === undefined)
+      (store.u_No === "" || store.u_No === undefined || cookies.Token === undefined)
     ) {
       return false;
     } else return true;

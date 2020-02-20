@@ -6,7 +6,7 @@
   </select>
 
   <select id = "selectOne">
-    select u_Id, u_Pw, u_Name, u_Email from User where u_No = #{u_No};
+    select u_Id, u_Pwd, u_Name, u_Email from User where u_No = #{u_No};
   </select>
 
   <select id = "idCheck">
@@ -18,11 +18,11 @@
   </select>
 
   <insert id = "addUser">
-    insert into User values(0, #{u_Id}, #{u_Pw}, #{u_Name}, #{u_Email}, 0);
+    insert into User values(0, #{u_Id}, #{u_Name}, #{u_Email}, 0, password(#{u_Pw}));
   </insert>
  
   <select id = "loginUser">
-    select u_No, u_Last from User where u_Id = #{u_Id} and u_Pw = #{u_Pw};
+    select u_No, u_Last from User where u_Id = #{u_Id} and u_Pwd = password(#{u_Pw});
   </select> 
 
   <update id = "updateUser">
@@ -30,7 +30,7 @@
   </update>
 
   <update id = "updatePass">
-    update User set u_Pw = #{u_Pw} where u_No = #{u_No};
+    update User set u_Pwd = password(#{u_Pw}) where u_No = #{u_No};
   </update>
 
   <delete id = "deleteUser">

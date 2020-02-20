@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 	int intdata= atoi(data);
 	// food distribute
 	conn = connectsql(host,user,pass,dbname);
-	insert_query(conn,EMPTYCHECK(),intdata-remainfood,0,(getprev==0?getprev:getprev-remainfood));
+	insert_query(conn,EMPTYCHECK(),0,intdata,(getprev==0?getprev:(getprev-remainfood<0?0:getprev-remainfood)));
 
 	printf("data updated!!\n");
 	return 0;

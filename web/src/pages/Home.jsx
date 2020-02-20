@@ -2,6 +2,7 @@ import React from "react";
 import CatIcon from "../assets/icons/caticon.png";
 import DogIcon from "../assets/icons/dogicon.png";
 import FeedIcon from "../assets/icons/feedicon.png";
+import LogoIcon from "../assets/icons/bmnLogo2.png";
 import { Button, makeStyles, Box, Typography } from "@material-ui/core";
 
 const useStyle = makeStyles(theme => ({
@@ -9,11 +10,11 @@ const useStyle = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    marginTop: "30vh"
+    marginTop: "20vh"
   },
   icon: {
-    width: "125px",
-    height: "125px"
+    width: "300px",
+    height: "300px"
   },
   smallIcon: {
     width: "50px",
@@ -27,13 +28,8 @@ const Home = props => {
   return (
     <div className={classes.home}>
       <Box display="flex" alignItems="flex-end">
-        <img src={DogIcon} alt="dogicon" className={classes.icon} />
-        <img src={FeedIcon} alt="feedicon" className={classes.smallIcon} />
-        <img src={CatIcon} alt="caticon" className={classes.icon} />
+        <img src={LogoIcon} alt="dogicon" className={classes.icon} />
       </Box>
-      <Typography variant="h5" gutterBottom>
-        밥 멍 냥
-      </Typography>
       <Typography variant="body1">반려동물 스마트 자동급식기</Typography>
       <Button color="primary" onClick={e => props.history.replace("/login")}>
         시작하기
