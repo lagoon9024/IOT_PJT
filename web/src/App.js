@@ -17,6 +17,7 @@ import FeedInfo from "./pages/FeedInfo";
 import FeedSearch from "./pages/FeedSearch";
 import PwModify from "./pages/PwModify"
 import {CookiesProvider} from "react-cookie"
+import Help from "./pages/Help";
 const App = () => {
   return (
     <>
@@ -37,6 +38,7 @@ const App = () => {
           <Route path="/feedinfo/:f_No" component={FeedInfo} />
           <Route path="/feedsearch" component={FeedSearch} />
           <Route path="/pwmodify" component={PwModify} />
+          <Route path="/help" component={Help}/>
           {/* <Redirect to="/not-found" /> */}
         </Layout>
       </BrowserRouter>

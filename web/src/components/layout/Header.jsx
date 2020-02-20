@@ -20,6 +20,7 @@ import NotificationList from "./header/NotificationList";
 import UserPopOver from "./header/UserPopOver";
 import { useHistory, useLocation } from "react-router";
 import TextLogo from "../../assets/icons/bmnLogo.png";
+import HelpIcon from "@material-ui/icons/Help";
 const useStyles = makeStyles(theme => ({
   toolBar: {
     color: "#7dabd0"
@@ -92,7 +93,9 @@ const Header = props => {
   const onClickDrawerOpenHandler = () => {
     setOpen(true);
   };
-
+  const openHelp = event => {
+    history.push("/help");
+  };
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
@@ -132,16 +135,14 @@ const Header = props => {
             </Box>
           </Typography>
 
-          {/* <IconButton
+          <IconButton
             color="inherit"
             aria-describedby={notePopId}
             variant="contained"
-            onClick={handleClick}
+            onClick={openHelp}
           >
-            <Badge badgeContent={unRead(notes)} color="error">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton> */}
+            <HelpIcon />
+          </IconButton>
           <IconButton
             edge="end"
             aria-label="account of current user"
